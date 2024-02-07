@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.smart.smartcontactmanager.dao.UserRepository;
 import com.smart.smartcontactmanager.entities.Contact;
 import com.smart.smartcontactmanager.entities.User;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -48,6 +51,14 @@ public class UserController {
         return "normal/add_contact";
     }
 
+    @PostMapping("/process_contact")
+    public String processContact(@ModelAttribute Contact contact) {
+
+        System.out.println("Data "+contact);
+        return "normal/add_contact";
+        //TODO: process POST rModelAttribute Contact contact;
+    }
+    
     
 
 
