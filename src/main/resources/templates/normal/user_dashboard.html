@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="normal/base::layout(~{::section})" >
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,12 @@
 </head>
 <body>
 
-    <h1>Hi this is user dashboard</h1>
+   <section>
+    <h1>Welcome you are normal user</h1>
+    <h1>This is private dashboard</h1>
+    <h1 th:text="${user.name}"></h1>
+    <h1 th:text="${user.email}"></h1>
+   </section>
     
 </body>
 </html>
