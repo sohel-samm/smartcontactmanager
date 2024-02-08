@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.smart.smartcontactmanager.dao.ContactRepository;
 import com.smart.smartcontactmanager.dao.UserRepository;
 import com.smart.smartcontactmanager.entities.Contact;
 import com.smart.smartcontactmanager.entities.User;
@@ -30,6 +32,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ContactRepository contactRepository;
 
     //method to adding commomn data to response
     @ModelAttribute
@@ -61,6 +65,7 @@ public class UserController {
         return "normal/add_contact";
     }
 
+    //FORM PROCESSING
     @PostMapping("/process_contact")
     public String processContact(@ModelAttribute Contact contact,@RequestParam("profileImage") MultipartFile file, Principal principal,Model model) {
 
@@ -97,6 +102,21 @@ public class UserController {
         //TODO: process POST rModelAttribute Contact contact;
     }
     
+    //SHOW CONTACTS HANDLER
+
+    @GetMapping("/show-contacts")   
+    public String showContacts(Model model,Principal principal) {
+        model.addAttribute("title", "Show Contacts");
+
+            String userName=principal.getName();
+            User user=this.userRepository.getUserByUserName(userName);
+            List<Contact> contacts=this.contactRepository.findContactByUser(user.getId());
+
+                model.addAttribute("contacts", contacts);
+        return "normal/show_contacts";
+    }
+    
+
     
 
 
