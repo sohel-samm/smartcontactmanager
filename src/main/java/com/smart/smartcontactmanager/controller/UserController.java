@@ -157,6 +157,58 @@ public class UserController {
 
         return "redirect:/user/show-contacts/0";
     }
+
+    //Update contact
+
+    @PostMapping("/update-contact/{cid}")
+    public String updateContact(@PathVariable("cid") Integer cid,Model model) {
+        
+        model.addAttribute("contact", contactRepository.findById(cid).get());
+        return "normal/update_form";
+    }
+    
+    //Update form process
+    @PostMapping("/update_process_contact")
+    public String updateContactProcess(@ModelAttribute Contact contact,@RequestParam("profileImage") MultipartFile file,Model model,Principal principal){
+        System.out.println("contact name "+contact.getName());
+        System.out.println("contact id "+contact.getCid());
+
+            try {
+                Contact oldContact=this.contactRepository.findById(contact.getCid()).get();
+                if(!file.isEmpty()){
+                    //delete old photo
+                    File deleteFile=new ClassPathResource("static/img").getFile();
+                    File file2=new File(deleteFile,oldContact.getImage());
+                    file2.delete();
+
+
+
+
+                    //update profile photo
+                    contact.setImage(file.getOriginalFilename());
+                    File saveFile=new ClassPathResource("static/img").getFile();
+                    Path path=Paths.get(saveFile.getAbsolutePath()+File.separator+file.getOriginalFilename());
+                    Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+
+                }
+                
+                // System.out.println("Image is uploaded");
+                // model.addAttribute("msg",new Message("Contact Updated Successfully!!","alert-success"));
+                else{
+                    contact.setImage(oldContact.getImage());
+                }
+            User user=this.userRepository.getUserByUserName(principal.getName());
+            contact.setUser(user);
+            this.contactRepository.save(contact);
+                
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+
+        return "redirect:/user/"+contact.getCid()+"/contact";
+    }
     
 
 
