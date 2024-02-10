@@ -8,10 +8,15 @@
 <body>
 
    <section>
-    <h1>Welcome you are normal user</h1>
-    <h1>This is private dashboard</h1>
-    <h1 th:text="${user.name}"></h1>
-    <h1 th:text="${user.email}"></h1>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <div class="container text-center">            <img style="height: 200px;width: 200px;" class="my_profile_picture" src="" th:src="@{'/img/'+${user.imageUrl}}" alt="profile photo">
+                    <h1 class="text-center text-secondary font-italic mt-3">Start adding your loved ones contacts</h1>
+            </div>
+            <a th:href="@{/user/add_contact}" class="btn btn-primary mt-4 btn-block text-uppercase" >Add new contact</a>
+        </div>
+    </div>
    </section>
     
 </body>
