@@ -14,6 +14,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +40,8 @@ public class UserController {
     private UserRepository userRepository;
     @Autowired
     private ContactRepository contactRepository;
-
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     //method to adding commomn data to response
     @ModelAttribute
     public void addCommonData(Model model,Principal principal){
@@ -210,11 +212,47 @@ public class UserController {
         return "redirect:/user/"+contact.getCid()+"/contact";
     }
 
+    //Profile viewing
+
     @GetMapping("/profile")
     public String yourProfile(Model model){
         model.addAttribute("title", "Profile page");
         return "normal/profile";
     }
+    
+    //Setting open handler
+
+    @GetMapping("/setting")
+    public String settings(Model model){
+        model.addAttribute("title", "Setting page");
+
+        return "normal/setting";
+    }
+    // change-password handler
+    @PostMapping("/change-password")
+    public String chnagePassword(Model model,@RequestParam("oldpassword") String oldpassword,@RequestParam("newpassword") String newpassword,Principal principal){
+        System.out.println("OLD PASSWORD"+oldpassword);
+        System.out.println("NEW PASSWORD"+newpassword);
+        String emmail=principal.getName();
+
+        User user=userRepository.getUserByUserName(emmail);
+        System.out.println(user.getPassword());
+        if(bCryptPasswordEncoder.matches(oldpassword, user.getPassword())){
+            //change password
+            user.setPassword(bCryptPasswordEncoder.encode(newpassword));
+            userRepository.save(user);
+            System.out.println("Passport changed!!!!");
+        }
+        else{
+            //error page
+            System.out.println("Password change FAILED!!!");
+            return "redirect:/user/setting";
+
+        }
+        return "redirect:/user/index";
+
+    }
+
     
 
 
