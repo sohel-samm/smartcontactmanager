@@ -17,6 +17,13 @@
             <a th:href="@{/user/add_contact}" class="btn btn-primary mt-4 btn-block text-uppercase" >Add new contact</a>
         </div>
     </div>
+    <script>
+        $(document).ready(()=>{
+            $(".item").removeClass("active");
+            $("#home-link").addClass("active");
+
+        });
+    </script>
    </section>
     
 </body>
