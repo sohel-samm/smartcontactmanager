@@ -18,7 +18,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name="USER")
+@Table(name = "USERS")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,8 +26,8 @@ public class User {
     private int id;
     @NotBlank(message = "user name can not be empty")
     @NotNull(message = "user name can not be null")
-    
-    @Size(min = 3,max = 12,message = "username length must b 3-12 char")
+
+    @Size(min = 3, max = 12, message = "username length must b 3-12 char")
     private String name;
     @Column(unique = true)
     @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", message = "Invalid Email!!")
@@ -37,70 +37,89 @@ public class User {
     private boolean enabled;
     private String imageUrl;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "user")
-    private List<Contact> contacts=new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Contact> contacts = new ArrayList<>();
     @Column(length = 500)
     private String about;
+
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public List<Contact> getContacts() {
         return contacts;
     }
+
     public void setContacts(List<Contact> contacts) {
         this.contacts = contacts;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
+
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
+
     public String getRole() {
         return role;
     }
+
     public void setRole(String role) {
         this.role = role;
     }
+
     public boolean isEnabled() {
         return enabled;
     }
+
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+
     public String getImageUrl() {
         return imageUrl;
     }
+
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
     public String getAbout() {
         return about;
     }
+
     public void setAbout(String about) {
         this.about = about;
     }
     // @Override
     // public String toString() {
-    //     return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", role=" + role
-    //             + ", enabled=" + enabled + ", imageUrl=" + imageUrl + ", contacts=" + contacts + ", about=" + about
-    //             + "]";
+    // return "User [id=" + id + ", name=" + name + ", email=" + email + ",
+    // password=" + password + ", role=" + role
+    // + ", enabled=" + enabled + ", imageUrl=" + imageUrl + ", contacts=" +
+    // contacts + ", about=" + about
+    // + "]";
     // }
-    
 
 }
